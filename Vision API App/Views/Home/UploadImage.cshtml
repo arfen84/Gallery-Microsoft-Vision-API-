@@ -1,0 +1,56 @@
+﻿@model Vision_API_App.Models.ImageGallery
+@{
+    ViewBag.Title = "Upload Image";
+    Layout = null;
+}
+<html>
+<head>
+    <title>Image Gallery</title>
+	<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+        window.onload = function ()
+        {
+            document.getElementById('imageUploadId').onsubmit = function ()
+            {
+                var formdata = new FormData();
+                var fileInput = document.getElementById('fileInputType');
+                for (i = 0; i < fileInput.files.length; i++)
+                {
+                    formdata.append(fileInput.files[i].name, fileInput.files[i]);
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/Home/UploadImageMethod');
+                xhr.send(formdata);
+                
+                return false;
+            }
+        }
+    </script>
+</head>
+<body >
+    <div class="container">
+
+            <div class="row">
+                <div class="col-md-9">
+                    <br />
+                    <form id="imageUploadId">
+                        <a href="/">Go back to Gallery List</a>
+                        <h3>Upload a picture</h3>
+                        <input id="fileInputType" type="file" multiple class="fileUpload"
+                               style="width:300px;"><br />
+                        <p style="color: #0066FF">
+                            You Can Upload a JPG, GIF, Or PNG File.
+                            This example of upload image from Ajax and Image Gallery
+                        </p>
+                        <input type="submit" class="btn btn-success" value="Image Upload" />
+                    </form>
+                </div>
+            </div>
+       
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+﻿@model  Vision_API_App.Models.IGContainer
+@{
+    Layout = null;
+  
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ImageInfo</title>
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 center-block">
+                <img src="@Url.Content(Model.imageGalery.ImagePath)"
+                     class="img-responsive center-block" style="margin:0 auto;" />
+            </div>
+        </div>
+        <div class="row" style="text-align:center;margin-top:20px;">
+            <ul>
+               
+            </ul>
+            <ul class="nav nav-pills">
+                <li>
+                    <a href="/" >Go back to Gallery List</a>
+                </li>
+                <li class="active">
+                    <a href="#2a" data-toggle="tab">Categories</a>
+                </li>
+                <li>
+                    <a href="#3a" data-toggle="tab">Tags</a>
+                </li>
+                <li>
+                    <a href="#4a" data-toggle="tab">JSON</a>
+                </li>
+            </ul>
+
+            <div class="tab-content clearfix">
+
+                <div class="tab-pane active" id="2a">
+                    <canvas id="myChart" width="300" height="200" style="height:200px;width:300px;"> </canvas>
+                </div>
+                <div class="tab-pane" id="3a">
+                   @{ foreach (var tag in Model.tags) { @tag;<br />}
+                   }
+                </div>
+                <div class="tab-pane" id="4a">
+                    <p>@Model.json</p>
+                </div>
+            </div>
+        </div>
+            
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+     <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var canvas = document.getElementById("myChart");
+        canvas.width = 200;
+        var myChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: [@for (int i=0;i<@Model.categories.Count;i++)
+        {<text>"</text>@Model.categories[i].name.ToString();<text>"</text>
+                if (i<@Model.categories.Count-1) {<text>,</text>}
+        }],
+                datasets: [{
+                    label: '# of Categories',
+                    data: [@for (int i=0;i<@Model.categories.Count;i++)
+        {<text>"</text>@Model.categories[i].score.ToString();<text>"</text>
+            if (i<@Model.categories.Count-1) {<text>,</text>}
+            }],
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+</html>
